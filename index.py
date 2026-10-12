@@ -4,8 +4,6 @@ def clear():
     time.sleep(.5)
     os.system('clear')
 
-clear()
-
 def create_report():
     number_of_incidents = int(input("Number of incidents: "))
 
@@ -33,17 +31,41 @@ def create_report():
         incidents.append(incident_report)
     return incidents
 
-clear()
-
-def display_report(incidents):
-    for number, i in enumerate(incidents):
-        print(f'INCIDENT REPORT #{number+1}')
+def display_report(filter_list):
+    # Loop through each incident and print
+    for number, i in enumerate(filter_list, start = 1):
+        print(f'INCIDENT REPORT #{number}')
         print(f'Type: {i["incident"]}')
         print(f'Location: {i["location"]}')
         print(f'Severity: {i["severity"]}')
         print(f'Description: {i["description"]}')
         print()
 
+def search_report(incidents):
+    # Create empty list
+    filter_list = []
+    search_filter = input("Search filter: ").lower()
+    if search_filter == "incident type":
+        key = "incident"
+    elif search_filter == "location":
+        key = "location"
+    elif search_filter == "severity":
+        key = "severity"
+    else:
+        print("Invalid search filter.")
+
+    search_parameter = input(f'Enter {search_filter}: ').lower()
+    
+    for item in incidents:
+        if search_parameter == item[key].lower():
+            filter_list.append(item)
+    
+    return filter_list
+
+
 incidents = create_report()
 clear()
-display_report(incidents)
+
+filtered_list = search_report(incidents)
+
+display_report(filtered_list)
